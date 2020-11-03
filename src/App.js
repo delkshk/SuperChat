@@ -48,13 +48,17 @@ function SignIn() {
     auth.signInWithPopup(provider);
   }
   return (
-    <button onClick={signInWithGoogle}>Google</button>
+    <div class="login">
+      <h2>Selecione um metodo de login</h2>
+      <button className="auth__button google" onClick={signInWithGoogle}>Login com Google</button>
+    </div>
+
   )
 }
 
 function ChatRoom() {
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt', "desc").limit(25);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
@@ -74,7 +78,7 @@ function ChatRoom() {
 
   return (
     <div>
-      <div>
+      <div className="feed">
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
       </div>
       <form onSubmit={sendMessage}>
@@ -98,8 +102,11 @@ function ChatMessage(props) {
 
 
     <div className={`message ${messageClass}`}>
+      <div className="row">
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
       <span>{displayName}</span>
-      {/* <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} /> */}
+
+      </div>
       <p>{text}</p>
     </div>
 
